@@ -8,8 +8,33 @@
 import SwiftUI
 
 struct DessertList: View {
+    
+    @State private var desserts: [Dessert]?
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationView {
+            List {
+                ForEach(desserts ?? []) { dessert in
+                    NavigationLink(destination: DessertDetail(dessertId: dessert.id)) {
+                        DessertRow(dessert: dessert)
+                    }
+                }
+            }
+            .navigationTitle("Desserts")
+        }
+        .task {
+            do {
+                desserts = try await getDesserts()
+            } catch APIError.invalidURL{
+                print("invalid URL")
+            } catch APIError.invalidResponse{
+                print("invalid response")
+            } catch APIError.invalidData{
+                print("invalid data")
+            } catch {
+                print("error")
+            }
+        }
     }
 }
 

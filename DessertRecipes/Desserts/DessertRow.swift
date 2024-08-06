@@ -7,12 +7,20 @@
 
 import SwiftUI
 
-struct DessertList: View {
+struct DessertRow: View {
+    var dessert: Dessert
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        HStack {
+            AsyncImage(url: URL(string: dessert.image)) { image in
+                image.resizable()
+            } placeholder: {
+                ProgressView()
+            }
+            .frame(width: 50, height: 50)
+            Text(dessert.name)
+            Spacer()
+        }
     }
 }
 
-#Preview {
-    DessertList()
-}
